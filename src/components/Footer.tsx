@@ -1,15 +1,17 @@
-import logo from "@/assets/logo-creato.png";
-
 const Footer = () => {
   return (
     <footer id="contacto" className="relative py-20 border-t border-border/30">
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center text-center">
-          <img 
-            src={logo} 
-            alt="CREATO by PALERMO" 
-            className="w-32 mb-8 opacity-80"
-          />
+          {/* Logo as text to blend with background */}
+          <div className="mb-8">
+            <h2 className="font-display text-3xl text-cream tracking-[0.2em] uppercase">
+              CREATO
+            </h2>
+            <p className="text-vintage text-xs text-cream-muted tracking-[0.4em] mt-1">
+              by PALERMO
+            </p>
+          </div>
           
           <div className="line-accent mb-8" />
           

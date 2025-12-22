@@ -52,6 +52,7 @@ const CocinaSection = () => {
             serie="Serie Premium"
             modelo="Liverpool"
             delay={200}
+            description="Como testimonio de herencias anglosajonas, su esencia conjuga calidez y sobriedad, bienestar compartido y la tibieza de los días."
           />
           <SubCategoryCard 
             image={boston}
