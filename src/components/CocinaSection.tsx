@@ -1,8 +1,31 @@
 import cocinasGeneral from "@/assets/cocinas-general.png";
 import liverpool from "@/assets/liverpool.jpg";
 import boston from "@/assets/boston.jpg";
+import liverpool1 from "@/assets/liverpool-1.jpg";
+import liverpool2 from "@/assets/liverpool-2.jpg";
+import liverpool3 from "@/assets/liverpool-3.jpg";
+import liverpool4 from "@/assets/liverpool-4.jpg";
+import liverpool5 from "@/assets/liverpool-5.jpg";
+import liverpool6 from "@/assets/liverpool-6.jpg";
+import liverpool7 from "@/assets/liverpool-7.jpg";
+import liverpool8 from "@/assets/liverpool-8.jpg";
+import liverpool9 from "@/assets/liverpool-9.jpg";
+import liverpool10 from "@/assets/liverpool-10.jpg";
 import CategoryCard from "./CategoryCard";
 import SubCategoryCard from "./SubCategoryCard";
+
+const liverpoolGallery = [
+  liverpool1,
+  liverpool2,
+  liverpool3,
+  liverpool4,
+  liverpool5,
+  liverpool6,
+  liverpool7,
+  liverpool8,
+  liverpool9,
+  liverpool10,
+];
 
 const CocinaSection = () => {
   return (
@@ -53,6 +76,7 @@ const CocinaSection = () => {
             modelo="Liverpool"
             delay={200}
             description="Como testimonio de herencias anglosajonas, su esencia conjuga calidez y sobriedad, bienestar compartido y la tibieza de los días."
+            gallery={liverpoolGallery}
           />
           <SubCategoryCard 
             image={boston}
