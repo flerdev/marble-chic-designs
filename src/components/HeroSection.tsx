@@ -20,11 +20,18 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <div className="opacity-0 animate-fade-in">
-          <img 
-            src={logo} 
-            alt="CREATO by PALERMO" 
-            className="w-64 md:w-80 lg:w-96 mb-8 drop-shadow-2xl"
-          />
+          {/* Logo as text to blend with background */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <span className="text-gold text-4xl md:text-5xl font-light">C</span>
+            </div>
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-cream tracking-[0.2em] uppercase">
+              CREATO
+            </h1>
+            <p className="text-vintage text-sm md:text-base text-cream-muted tracking-[0.5em] mt-2">
+              by PALERMO
+            </p>
+          </div>
         </div>
         
         <div className="opacity-0 animate-slide-up animation-delay-200">
