@@ -1,12 +1,11 @@
-import logo from "@/assets/logo-creato.png";
-
 const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-card">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3">
-            <img src={logo} alt="CREATO by PALERMO" className="h-12 w-auto" />
+          <a href="#" className="flex items-center gap-2">
+            <span className="font-display text-xl text-cream tracking-[0.15em] uppercase">CREATO</span>
+            <span className="text-vintage text-[10px] text-cream-muted tracking-[0.3em]">by PALERMO</span>
           </a>
           
           <ul className="hidden md:flex items-center gap-10">
