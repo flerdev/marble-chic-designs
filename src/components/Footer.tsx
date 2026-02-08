@@ -38,7 +38,7 @@ const Footer = () => {
           </div>
           
           <p className="text-xs text-muted-foreground">
-            © 2024 CREATO by PALERMO. Todos los derechos reservados.
+            © {new Date().getFullYear()} CREATO by PALERMO. Todos los derechos reservados.
           </p>
         </div>
       </div>

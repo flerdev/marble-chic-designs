@@ -12,14 +12,15 @@ interface SubCategoryCardProps {
   delay?: number;
   description?: string;
   gallery?: string[];
+  previewVideo?: string;
 }
 
-const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery }: SubCategoryCardProps) => {
+const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery, previewVideo }: SubCategoryCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const images = gallery && gallery.length > 0 ? gallery : [image];
+  const images = gallery && gallery.length > 0 ? gallery : image ? [image] : [];
 
   const goToNext = () => {
     if (isAnimating) return;
@@ -47,14 +48,26 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
       <div 
         className="group relative overflow-hidden cursor-pointer opacity-0 animate-slide-up"
         style={{ animationDelay: `${delay}ms` }}
+        onClick={() => setIsOpen(true)}
       >
         {/* Image */}
         <div className="aspect-[16/10] overflow-hidden">
-          <img 
-            src={image} 
-            alt={modelo}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-75"
-          />
+          {previewVideo ? (
+            <video
+              src={previewVideo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-75"
+            />
+          ) : (
+            <img 
+              src={image} 
+              alt={modelo}
+              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-75"
+            />
+          )}
         </div>
         
         {/* Overlay gradient */}
@@ -75,12 +88,14 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
             
             {/* Hover reveal */}
             <div className="overflow-hidden h-0 group-hover:h-10 transition-all duration-500">
-              <button 
-                onClick={() => setIsOpen(true)}
-                className="mt-4 text-vintage text-xs text-gold border-b border-gold/50 pb-1 hover:border-gold transition-colors"
-              >
-                Descubrir
-              </button>
+              {images.length > 0 && (
+                <button 
+                  onClick={() => setIsOpen(true)}
+                  className="mt-4 text-vintage text-xs text-gold border-b border-gold/50 pb-1 hover:border-gold transition-colors"
+                >
+                  Descubrir
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -94,10 +109,10 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
 
       {/* Modal with Gallery */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-6xl bg-background border-border/50 p-0 overflow-hidden">
-          <div className="grid md:grid-cols-2">
+        <DialogContent className="w-[max(92vw,1500px)] max-h-[90vh] bg-background border-border/50 p-0 overflow-y-auto scrollbar-hide">
+          <div className="flex flex-col">
             {/* Gallery */}
-            <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[500px] overflow-hidden bg-background-dark">
+            <div className="relative aspect-[16/10] md:aspect-[16/9] overflow-hidden bg-background-dark">
               {/* Images */}
               {images.map((img, index) => (
                 <div
@@ -121,13 +136,13 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
                 <>
                   <button
                     onClick={goToPrev}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-background/60 backdrop-blur-sm border border-border/30 text-cream hover:bg-background/80 hover:border-gold/50 transition-all duration-300 group"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-background/60 backdrop-blur-sm border border-border/30 text-cream hover:bg-background/80 hover:border-gold/50 transition-all duration-300 group"
                   >
                     <ChevronLeft className="w-5 h-5 group-hover:text-gold transition-colors" />
                   </button>
                   <button
                     onClick={goToNext}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-background/60 backdrop-blur-sm border border-border/30 text-cream hover:bg-background/80 hover:border-gold/50 transition-all duration-300 group"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-background/60 backdrop-blur-sm border border-border/30 text-cream hover:bg-background/80 hover:border-gold/50 transition-all duration-300 group"
                   >
                     <ChevronRight className="w-5 h-5 group-hover:text-gold transition-colors" />
                   </button>
@@ -136,7 +151,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
 
               {/* Dots Indicator */}
               {images.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
                   {images.map((_, index) => (
                     <button
                       key={index}
@@ -153,7 +168,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
 
               {/* Counter */}
               {images.length > 1 && (
-                <div className="absolute top-4 right-4 px-3 py-1 bg-background/60 backdrop-blur-sm border border-border/30">
+                <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-background/60 backdrop-blur-sm border border-border/30">
                   <span className="text-vintage text-xs text-cream">
                     {currentIndex + 1} / {images.length}
                   </span>
@@ -162,14 +177,14 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
             </div>
             
             {/* Description */}
-            <div className="p-8 md:p-12 flex flex-col justify-center">
+            <div className="p-6 md:p-8 border-t border-border/30">
               <span className="text-vintage text-xs text-gold tracking-[0.4em] mb-4">
                 {serie}
               </span>
-              <h3 className="font-display text-4xl md:text-5xl text-cream tracking-[0.15em] uppercase mb-8">
+              <h3 className="font-display text-3xl md:text-4xl text-cream tracking-[0.15em] uppercase mb-6">
                 {modelo}
               </h3>
-              <div className="line-accent mb-8" />
+              <div className="line-accent mb-6" />
               {description && (
                 <p className="text-vintage text-base text-cream-muted leading-relaxed tracking-wide">
                   {description}

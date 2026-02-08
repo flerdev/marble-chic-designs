@@ -1,31 +1,80 @@
 import cocinasGeneral from "@/assets/cocinas-general.png";
-import liverpool from "@/assets/liverpool.jpg";
-import boston from "@/assets/boston.jpg";
-import liverpool1 from "@/assets/liverpool-1.jpg";
-import liverpool2 from "@/assets/liverpool-2.jpg";
-import liverpool3 from "@/assets/liverpool-3.jpg";
-import liverpool4 from "@/assets/liverpool-4.jpg";
-import liverpool5 from "@/assets/liverpool-5.jpg";
-import liverpool6 from "@/assets/liverpool-6.jpg";
-import liverpool7 from "@/assets/liverpool-7.jpg";
-import liverpool8 from "@/assets/liverpool-8.jpg";
-import liverpool9 from "@/assets/liverpool-9.jpg";
-import liverpool10 from "@/assets/liverpool-10.jpg";
 import CategoryCard from "./CategoryCard";
 import SubCategoryCard from "./SubCategoryCard";
 
-const liverpoolGallery = [
-  liverpool1,
-  liverpool2,
-  liverpool3,
-  liverpool4,
-  liverpool5,
-  liverpool6,
-  liverpool7,
-  liverpool8,
-  liverpool9,
-  liverpool10,
-];
+const premiumImageModules = import.meta.glob(
+  "../assets/cocinas/premium/*/*.{jpg,jpeg,png,webp}",
+  {
+    eager: true,
+    import: "default",
+  }
+);
+
+const premiumVideoModules = import.meta.glob(
+  "../assets/cocinas/premium/*/*.{mp4,webm,mov,m4v,ogg}",
+  {
+    eager: true,
+    import: "default",
+  }
+);
+
+const getFolderName = (path: string) => {
+  const match = path.match(/\/premium\/([^/]+)\//);
+  return match?.[1] ?? null;
+};
+
+const getPremiumGallery = (folderName: string) =>
+  Object.entries(premiumImageModules)
+    .filter(([path]) => path.includes(`/premium/${folderName}/`))
+    .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+    .map(([, image]) => image as string);
+
+const getPremiumVideos = (folderName: string) =>
+  Object.entries(premiumVideoModules)
+    .filter(([path]) => path.includes(`/premium/${folderName}/`))
+    .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+    .map(([, video]) => video as string);
+
+const liverpoolGallery = getPremiumGallery("liverpool");
+const bostonGallery = getPremiumGallery("boston");
+const liverpoolVideos = getPremiumVideos("liverpool");
+const bostonVideos = getPremiumVideos("boston");
+const liverpoolCover = liverpoolGallery[0] ?? "";
+const bostonCover = bostonGallery[0] ?? "";
+
+const premiumModelNames: Record<string, string> = {
+  "city-city-rpt": "City",
+  "lumina-ii": "Lúmina II",
+};
+
+const toModelName = (folderName: string) =>
+  premiumModelNames[folderName] ??
+  folderName
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+
+const premiumFolders = Array.from(
+  new Set(
+    [...Object.keys(premiumImageModules), ...Object.keys(premiumVideoModules)]
+      .map(getFolderName)
+      .filter((folderName): folderName is string => Boolean(folderName))
+  )
+)
+  .filter((folderName) => folderName !== "liverpool" && folderName !== "boston")
+  .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+const premiumCards = premiumFolders.map((folderName) => {
+  const gallery = getPremiumGallery(folderName);
+  const videos = getPremiumVideos(folderName);
+  return {
+    key: folderName,
+    modelo: toModelName(folderName),
+    coverImage: gallery[0] ?? "",
+    previewVideo: videos[0],
+    gallery,
+  };
+});
 
 const CocinaSection = () => {
   return (
@@ -69,9 +118,10 @@ const CocinaSection = () => {
 
       {/* Sub Categories Grid */}
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
           <SubCategoryCard 
-            image={liverpool}
+            image={liverpoolCover}
+            previewVideo={liverpoolVideos[0]}
             serie="Serie Premium"
             modelo="Liverpool"
             delay={200}
@@ -79,11 +129,24 @@ const CocinaSection = () => {
             gallery={liverpoolGallery}
           />
           <SubCategoryCard 
-            image={boston}
+            image={bostonCover}
+            previewVideo={bostonVideos[0]}
             serie="Serie Premium"
             modelo="Boston"
             delay={400}
+            gallery={bostonGallery}
           />
+          {premiumCards.map((card, index) => (
+            <SubCategoryCard
+              key={card.key}
+              image={card.coverImage}
+              previewVideo={card.previewVideo}
+              serie="Serie Premium"
+              modelo={card.modelo}
+              delay={600 + index * 200}
+              gallery={card.gallery}
+            />
+          ))}
         </div>
       </div>
 
