@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Dialog,
@@ -10,7 +10,7 @@ interface SubCategoryCardProps {
   serie: string;
   modelo: string;
   delay?: number;
-  description?: string;
+  description?: string[];
   gallery?: string[];
   previewVideo?: string;
 }
@@ -19,8 +19,15 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const images = gallery && gallery.length > 0 ? gallery : image ? [image] : [];
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsSubmitted(false);
+    }
+  }, [isOpen]);
 
   const goToNext = () => {
     if (isAnimating) return;
@@ -185,11 +192,142 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
                 {modelo}
               </h3>
               <div className="line-accent mb-6" />
-              {description && (
-                <p className="text-vintage text-base text-cream-muted leading-relaxed tracking-wide">
-                  {description}
-                </p>
+              {description && description.length > 0 && (
+                <div className="space-y-4 text-vintage text-base text-cream-muted leading-relaxed tracking-wide">
+                  {description.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
               )}
+            </div>
+
+            {/* Contact Form */}
+            <div className="px-6 pb-8 md:px-8 border-t border-border/30">
+              <div className="py-8">
+                <h4 className="font-display text-2xl text-cream tracking-[0.12em] uppercase">
+                  ¿Estás desarrollando un proyecto?
+                </h4>
+                <p className="text-vintage text-base text-cream-muted mt-3 max-w-2xl">
+                  Contanos sobre tu espacio para que podamos asesorarte de forma personalizada según la colección que te interese.
+                </p>
+              </div>
+              <form
+                className="grid gap-5 md:grid-cols-2"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setIsSubmitted(true);
+                }}
+              >
+                <input type="hidden" name="coleccion" value={modelo} />
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-nombre`}>
+                    Nombre y apellido
+                  </label>
+                  <input
+                    id={`${modelo}-nombre`}
+                    name="nombre"
+                    required
+                    className="h-12 rounded-md border border-border/50 bg-background px-4 text-cream outline-none focus:border-gold/70"
+                    type="text"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-email`}>
+                    Email
+                  </label>
+                  <input
+                    id={`${modelo}-email`}
+                    name="email"
+                    required
+                    className="h-12 rounded-md border border-border/50 bg-background px-4 text-cream outline-none focus:border-gold/70"
+                    type="email"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-telefono`}>
+                    Teléfono
+                  </label>
+                  <input
+                    id={`${modelo}-telefono`}
+                    name="telefono"
+                    required
+                    className="h-12 rounded-md border border-border/50 bg-background px-4 text-cream outline-none focus:border-gold/70"
+                    type="tel"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-perfil`}>
+                    Perfil
+                  </label>
+                  <select
+                    id={`${modelo}-perfil`}
+                    name="perfil"
+                    required
+                    className="h-12 rounded-md border border-border/50 bg-background px-4 text-cream outline-none focus:border-gold/70"
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="Diseñador/a de interiores">Diseñador/a de interiores</option>
+                    <option value="Arquitecto/a">Arquitecto/a</option>
+                    <option value="Desarrollador/a inmobiliario">Desarrollador/a inmobiliario</option>
+                    <option value="Inmobiliaria">Inmobiliaria</option>
+                    <option value="Particular">Particular</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-tipo-proyecto`}>
+                    Tipo de proyecto
+                  </label>
+                  <select
+                    id={`${modelo}-tipo-proyecto`}
+                    name="tipo_proyecto"
+                    className="h-12 rounded-md border border-border/50 bg-background px-4 text-cream outline-none focus:border-gold/70"
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="Residencial">Residencial</option>
+                    <option value="Comercial">Comercial</option>
+                    <option value="Desarrollo inmobiliario">Desarrollo inmobiliario</option>
+                    <option value="Reforma / remodelación">Reforma / remodelación</option>
+                    <option value="A definir">A definir</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-2 md:col-span-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-descripcion`}>
+                    Descripción del proyecto
+                  </label>
+                  <textarea
+                    id={`${modelo}-descripcion`}
+                    name="descripcion"
+                    rows={4}
+                    className="rounded-md border border-border/50 bg-background px-4 py-3 text-cream outline-none focus:border-gold/70"
+                  />
+                </div>
+                <div className="flex flex-col gap-2 md:col-span-2">
+                  <label className="text-xs tracking-[0.2em] text-cream-muted uppercase" htmlFor={`${modelo}-archivo`}>
+                    Adjuntar archivo (opcional)
+                  </label>
+                  <input
+                    id={`${modelo}-archivo`}
+                    name="archivo"
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    className="rounded-md border border-border/50 bg-background px-4 py-2 text-cream file:mr-4 file:rounded-md file:border-0 file:bg-gold/10 file:px-4 file:py-2 file:text-xs file:text-gold hover:file:bg-gold/20"
+                  />
+                </div>
+                <div className="md:col-span-2 flex flex-col items-start gap-4 pt-2">
+                  <button
+                    type="submit"
+                    className="px-6 py-3 border border-gold/60 text-xs tracking-[0.3em] text-gold uppercase transition-colors hover:bg-gold/10"
+                  >
+                    Solicitar asesoramiento
+                  </button>
+                  {isSubmitted && (
+                    <p className="text-sm text-cream-muted">
+                      Gracias por tu consulta. Recibimos la información sobre tu proyecto y la colección seleccionada. Nos pondremos en contacto para asesorarte de forma personalizada.
+                    </p>
+                  )}
+                </div>
+              </form>
             </div>
           </div>
         </DialogContent>
