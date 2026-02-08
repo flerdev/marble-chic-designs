@@ -1,3 +1,4 @@
+//identificar que componente editar para que en cada card de cada modelo , colocar descripcion ; y formulario de contacto : nombre, email, telefono ,preguntar si es desarrolladora , inmobiliaria , diseño de interiores , arquitecto/a ,si es obra nueva o remodelacion , planos , y algun comentario 
 import cocinasGeneral from "@/assets/cocinas-general.png";
 import CategoryCard from "./CategoryCard";
 import SubCategoryCard from "./SubCategoryCard";
