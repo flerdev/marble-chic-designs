@@ -193,7 +193,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
               </h3>
               <div className="line-accent mb-6" />
               {description && description.length > 0 && (
-                <div className="space-y-4 font-body text-lg md:text-xl text-cream leading-relaxed tracking-normal">
+                <div className="space-y-4 font-body text-base md:text-lg text-cream-muted leading-relaxed tracking-normal">
                   {description.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
