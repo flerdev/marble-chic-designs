@@ -193,7 +193,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
               </h3>
               <div className="line-accent mb-6" />
               {description && description.length > 0 && (
-                <div className="space-y-4 text-vintage text-base text-cream-muted leading-relaxed tracking-wide">
+                <div className="space-y-4 font-body text-base md:text-lg text-cream-muted leading-relaxed tracking-normal">
                   {description.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
@@ -207,7 +207,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
                 <h4 className="font-display text-2xl text-cream tracking-[0.12em] uppercase">
                   ¿Estás desarrollando un proyecto?
                 </h4>
-                <p className="text-vintage text-base text-cream-muted mt-3 max-w-2xl">
+                <p className="font-body text-base md:text-lg text-cream-muted mt-3 max-w-2xl leading-relaxed tracking-normal">
                   Contanos sobre tu espacio para que podamos asesorarte de forma personalizada según la colección que te interese.
                 </p>
               </div>
