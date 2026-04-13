@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
+import { scrollToTop } from "@/lib/scrollToTop";
 
 interface SubCategoryCardProps {
   image: string;
@@ -20,6 +21,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const dialogContentRef = useRef<HTMLDivElement | null>(null);
 
   const images = gallery && gallery.length > 0 ? gallery : image ? [image] : [];
 
@@ -28,6 +30,18 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
       setIsSubmitted(false);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    scrollToTop();
+    setCurrentIndex(0);
+    dialogContentRef.current?.scrollTo({ top: 0, behavior: "auto" });
+  }, [isOpen]);
+
+  const openCard = () => {
+    setIsOpen(true);
+  };
 
   const goToNext = () => {
     if (isAnimating) return;
@@ -55,7 +69,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
       <div 
         className="group relative overflow-hidden cursor-pointer opacity-0 animate-slide-up"
         style={{ animationDelay: `${delay}ms` }}
-        onClick={() => setIsOpen(true)}
+        onClick={openCard}
       >
         {/* Image */}
         <div className="aspect-[16/10] overflow-hidden">
@@ -97,7 +111,7 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
             <div className="overflow-hidden h-0 group-hover:h-10 transition-all duration-500">
               {images.length > 0 && (
                 <button 
-                  onClick={() => setIsOpen(true)}
+                  onClick={openCard}
                   className="mt-4 text-vintage text-xs text-gold border-b border-gold/50 pb-1 hover:border-gold transition-colors"
                 >
                   Descubrir
@@ -116,7 +130,10 @@ const SubCategoryCard = ({ image, serie, modelo, delay = 0, description, gallery
 
       {/* Modal with Gallery */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-[max(92vw,1500px)] max-h-[90vh] bg-background border-border/50 p-0 overflow-y-auto scrollbar-hide">
+        <DialogContent
+          ref={dialogContentRef}
+          className="w-[max(92vw,1500px)] max-h-[90vh] bg-background border-border/50 p-0 overflow-y-auto scrollbar-hide"
+        >
           <div className="flex flex-col">
             {/* Gallery */}
             <div className="relative aspect-[16/10] md:aspect-[16/9] overflow-hidden bg-background-dark">
