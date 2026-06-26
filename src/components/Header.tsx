@@ -1,41 +1,51 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-card">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <span className="font-display text-xl text-cream tracking-[0.15em] uppercase">CREATO</span>
             <span className="text-vintage text-[10px] text-cream-muted tracking-[0.3em]">by PALERMO</span>
-          </a>
-          
+          </Link>
+
           <ul className="hidden md:flex items-center gap-10">
             <li>
-              <a 
-                href="#inicio" 
+              <a
+                href="/#inicio"
                 className="text-vintage text-sm text-cream hover:text-gold transition-colors duration-300"
               >
                 Inicio
               </a>
             </li>
             <li>
-              <a 
-                href="#cocinas" 
+              <a
+                href="/#cocinas"
                 className="text-vintage text-sm text-cream hover:text-gold transition-colors duration-300"
               >
                 Cocinas
               </a>
             </li>
             <li>
-              <a 
-                href="#colecciones" 
+              <a
+                href="/#piletas"
                 className="text-vintage text-sm text-cream hover:text-gold transition-colors duration-300"
               >
-                Colecciones
+                Piletas
               </a>
             </li>
             <li>
-              <a 
-                href="#contacto" 
+              <a
+                href="/#mesadas"
+                className="text-vintage text-sm text-cream hover:text-gold transition-colors duration-300"
+              >
+                Mesadas
+              </a>
+            </li>
+            <li>
+              <a
+                href="/#contacto"
                 className="text-vintage text-sm text-cream hover:text-gold transition-colors duration-300"
               >
                 Contacto

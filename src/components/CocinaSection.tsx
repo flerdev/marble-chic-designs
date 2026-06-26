@@ -1,33 +1,15 @@
+import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
 import cocinasGeneral from "@/assets/cocinas-general.png";
-import liverpool from "@/assets/liverpool.jpg";
-import boston from "@/assets/boston.jpg";
-import liverpool1 from "@/assets/liverpool-1.jpg";
-import liverpool2 from "@/assets/liverpool-2.jpg";
-import liverpool3 from "@/assets/liverpool-3.jpg";
-import liverpool4 from "@/assets/liverpool-4.jpg";
-import liverpool5 from "@/assets/liverpool-5.jpg";
-import liverpool6 from "@/assets/liverpool-6.jpg";
-import liverpool7 from "@/assets/liverpool-7.jpg";
-import liverpool8 from "@/assets/liverpool-8.jpg";
-import liverpool9 from "@/assets/liverpool-9.jpg";
-import liverpool10 from "@/assets/liverpool-10.jpg";
-import CategoryCard from "./CategoryCard";
+import CategoryHeroCard from "./CategoryHeroCard";
 import SubCategoryCard from "./SubCategoryCard";
+import { premiumCollections } from "@/data/cocinas";
 
-const liverpoolGallery = [
-  liverpool1,
-  liverpool2,
-  liverpool3,
-  liverpool4,
-  liverpool5,
-  liverpool6,
-  liverpool7,
-  liverpool8,
-  liverpool9,
-  liverpool10,
-];
+const PREVIEW_COUNT = 3;
 
 const CocinaSection = () => {
+  const previewCollections = premiumCollections.slice(0, PREVIEW_COUNT);
+
   return (
     <section id="cocinas" className="relative py-24 md:py-32">
       {/* Section Header */}
@@ -43,10 +25,10 @@ const CocinaSection = () => {
         </div>
       </div>
 
-      {/* Main Category */}
+      {/* Main Category Hero */}
       <div className="container mx-auto px-6 mb-16 md:mb-24">
         <div className="max-w-4xl mx-auto">
-          <CategoryCard 
+          <CategoryHeroCard
             image={cocinasGeneral}
             title="Cocinas"
             subtitle="En General"
@@ -55,35 +37,46 @@ const CocinaSection = () => {
         </div>
       </div>
 
-      {/* Sub Categories Header */}
-      <div className="container mx-auto px-6 mb-12 text-center">
-        <div className="opacity-0 animate-fade-in animation-delay-400">
-          <span className="text-vintage text-xs text-cream-muted tracking-[0.4em]">
-            Serie Premium
-          </span>
-          <h3 className="font-display text-2xl md:text-3xl text-cream mt-3 tracking-[0.15em] uppercase">
-            Modelos
-          </h3>
-        </div>
-      </div>
-
-      {/* Sub Categories Grid */}
+      {/* Preview grid */}
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
-          <SubCategoryCard 
-            image={liverpool}
-            serie="Serie Premium"
-            modelo="Liverpool"
-            delay={200}
-            description="Como testimonio de herencias anglosajonas, su esencia conjuga calidez y sobriedad, bienestar compartido y la tibieza de los días."
-            gallery={liverpoolGallery}
-          />
-          <SubCategoryCard 
-            image={boston}
-            serie="Serie Premium"
-            modelo="Boston"
-            delay={400}
-          />
+        <div className="max-w-6xl mx-auto">
+          {/* Row: serie label + "Ver todo" link */}
+          <div className="opacity-0 animate-fade-in animation-delay-400 flex items-end justify-between mb-8 md:mb-10">
+            <div>
+              <span className="text-vintage text-xs text-cream-muted tracking-[0.4em]">
+                Serie Premium
+              </span>
+              <h3 className="font-display text-2xl md:text-3xl text-cream mt-2 tracking-[0.15em] uppercase">
+                Modelos
+              </h3>
+            </div>
+
+            <Link
+              to="/cocinas"
+              className="group flex items-center gap-2 text-vintage text-xs text-cream-muted tracking-[0.3em] hover:text-gold transition-colors duration-300 mb-1"
+            >
+              <span>Ver todo</span>
+              <span className="w-7 h-7 flex items-center justify-center border border-cream-muted/30 group-hover:border-gold/60 transition-colors duration-300">
+                <Plus className="w-3.5 h-3.5" />
+              </span>
+            </Link>
+          </div>
+
+          {/* 3 preview cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {previewCollections.map((col, index) => (
+              <SubCategoryCard
+                key={col.id}
+                image={col.image}
+                previewVideo={col.previewVideo}
+                serie={col.serieLabel}
+                modelo={col.name}
+                delay={400 + index * 150}
+                description={col.description}
+                gallery={col.gallery}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
